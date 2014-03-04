@@ -34,6 +34,17 @@ public class ApiUsersControllerTest {
 	}
 
 
+	@Test
+	public void duplicateUserId_login_isNotSameUser() {
+		String userId = "userId";
+		SocialUser loginUser = new SocialUser(1L);
+		when(userService.findByUserId(userId)).thenReturn(loginUser);
+
+		String actual = dut.duplicateUserId(new SocialUser(2L), userId);
+		assertThat(actual, is("true"));
+	}
+
+
 
 
 
