@@ -23,8 +23,9 @@ public class ApiUsersControllerTest {
 	public static final String FALSE = "false";
 	public static final String TRUE = "true";
 	public static final String USER_ID = "userId";
-	public static final SocialUser USER1 = new SocialUser(1L);
 	public static final String EMAIL = "email@slipp.net";
+	public static final SocialUser USER1 = new SocialUser(1L);
+	public static final SocialUser USER2 = new SocialUser(2L);
 
 	@Mock
 	private SocialUserService userService;
@@ -45,7 +46,7 @@ public class ApiUsersControllerTest {
 	public void duplicateUserId_login_isNotSameUser() {
 		when(userService.findByUserId(USER_ID)).thenReturn(USER1);
 
-		String actual = dut.duplicateUserId(new SocialUser(2L), USER_ID);
+		String actual = dut.duplicateUserId(USER2, USER_ID);
 		assertThat(actual, is(TRUE));
 	}
 
@@ -67,8 +68,8 @@ public class ApiUsersControllerTest {
 	public void duplicateEmail_login_isNotSameUser() {
 		when(userService.findByEmailAndProviderId(EMAIL, ProviderType.slipp)).thenReturn(USER1);
 
-		String actual = dut.duplicateEmail(USER1, EMAIL, ProviderType.slipp);
-		assertThat(actual, is(FALSE));
+		String actual = dut.duplicateEmail(USER2, EMAIL, ProviderType.slipp);
+		assertThat(actual, is(TRUE));
 	}
 
 
