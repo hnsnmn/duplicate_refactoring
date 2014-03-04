@@ -21,4 +21,6 @@ public class SocialUser {
 	public boolean isSameUser(SocialUser loginUser) {
 		return this.id == loginUser.getId();
 	}
+
+	public static SocialUser GUEST_USER = new SocialUser(1L);
 }
