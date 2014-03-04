@@ -1,8 +1,8 @@
 package hnsnmn.login.service;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -29,12 +29,13 @@ public class ApiUsersControllerTest {
 
 	@Mock
 	private SocialUserService userService;
+	private ApiUsersController dut;
 
-	@Mock
-	private CheckDupService checkDupService;
-
-	@InjectMocks
-	private ApiUsersController dut = new ApiUsersController(checkDupService);
+	@Before
+	public void setUp() {
+		CheckDupService checkDupService = new CheckDupService(userService);
+		dut = new ApiUsersController(checkDupService);
+	}
 
 	@Test
 	public void duplicateUserId_login_isSameUser() {
