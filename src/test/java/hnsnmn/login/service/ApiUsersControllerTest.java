@@ -33,7 +33,7 @@ public class ApiUsersControllerTest {
 
 	@Before
 	public void setUp() {
-		CheckDupService checkDupService = new CheckDupService(userService);
+		CheckDupService checkDupService = new CheckDupServiceImpl(userService);
 		dut = new ApiUsersController(checkDupService);
 	}
 
