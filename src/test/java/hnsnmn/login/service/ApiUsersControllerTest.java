@@ -30,8 +30,11 @@ public class ApiUsersControllerTest {
 	@Mock
 	private SocialUserService userService;
 
+	@Mock
+	private CheckDupService checkDupService;
+
 	@InjectMocks
-	private ApiUsersController dut = new ApiUsersController();
+	private ApiUsersController dut = new ApiUsersController(checkDupService);
 
 	@Test
 	public void duplicateUserId_login_isSameUser() {
@@ -73,29 +76,4 @@ public class ApiUsersControllerTest {
 	}
 
 
-
-	private class ApiUsersController {
-		public String duplicateUserId(SocialUser USER1, String userId) {
-			SocialUser socialUser = userService.findByUserId(userId);
-			if (socialUser == null) {
-				return "false";
-			}
-
-			if (socialUser.isSameUser(USER1)) {
-				return "false";
-			}
-			return "true";
-		}
-
-		public String duplicateEmail(SocialUser USER1, String email, ProviderType provierType) {
-			SocialUser socialUser = userService.findByEmailAndProviderId(email, provierType);
-			if (socialUser == null) {
-				return "false";
-			}
-			if (socialUser.isSameUser(USER1)) {
-				return "false";
-			}
-			return "true";
-		}
-	}
 }
