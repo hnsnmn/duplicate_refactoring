@@ -15,19 +15,23 @@ public class CheckDupServiceImpl implements CheckDupService{
 	}
 
 	@Override
-	public boolean duplicateUserId(SocialUser loginUser, String userId) {
+	public boolean checkDuplicateUserId(SocialUser loginUser, String userId) {
 		SocialUser socialUser = userService.findByUserId(userId);
 		if (socialUser == null)
 			return false;
-		return !socialUser.isSameUser(loginUser);
+		return doSomeMeaningCheck(loginUser, socialUser);
 	}
 
-
 	@Override
-	public boolean duplicateEmail(SocialUser loginUser, String email, ProviderType provierType) {
+	public boolean checkDuplicateEmail(SocialUser loginUser, String email, ProviderType provierType) {
 		SocialUser socialUser = userService.findByEmailAndProviderId(email, provierType);
 		if (socialUser == null)
 			return false;
+		return doSomeMeaningCheck(loginUser, socialUser);
+	}
+
+
+	private boolean doSomeMeaningCheck(SocialUser loginUser, SocialUser socialUser) {
 		return !socialUser.isSameUser(loginUser);
 	}
 }
