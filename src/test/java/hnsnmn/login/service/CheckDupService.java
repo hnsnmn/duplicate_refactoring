@@ -8,6 +8,6 @@ package hnsnmn.login.service;
  * To change this template use File | Settings | File Templates.
  */
 public interface CheckDupService {
-	public boolean duplicateUserId(SocialUser loginUser, String userId);
-	public boolean duplicateEmail(SocialUser loginUser, String email, ProviderType provierType);
+	public boolean checkDuplicateUserId(SocialUser loginUser, String userId);
+	public boolean checkDuplicateEmail(SocialUser loginUser, String email, ProviderType provierType);
 }
