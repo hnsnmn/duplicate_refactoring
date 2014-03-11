@@ -21,11 +21,11 @@ public class ApiUsersController {
 	}
 
 	@ResponseBody
-	public String duplicateUserId(SocialUser loginUser, String userId) {
-		return Boolean.toString(checkDupService.duplicateUserId(loginUser, userId));
+	public String checkDuplicateUserId(SocialUser loginUser, String userId) {
+		return Boolean.toString(checkDupService.checkDuplicateUserId(loginUser, userId));
 	}
 
-	public String duplicateEmail(SocialUser loginUser, String email, ProviderType provierType) {
-		return Boolean.toString(checkDupService.duplicateEmail(loginUser, email, provierType));
+	public String checkDuplicateEmail(SocialUser loginUser, String email, ProviderType provierType) {
+		return Boolean.toString(checkDupService.checkDuplicateEmail(loginUser, email, provierType));
 	}
 }

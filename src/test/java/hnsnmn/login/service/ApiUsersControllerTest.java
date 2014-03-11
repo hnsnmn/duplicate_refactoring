@@ -8,6 +8,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 /**
@@ -28,49 +30,39 @@ public class ApiUsersControllerTest {
 	public static final SocialUser USER2 = new SocialUser(2L);
 
 	@Mock
-	private SocialUserService userService;
-	private ApiUsersController dut;
+	private CheckDupService checkDupService;
 
+	private ApiUsersController dut;
 	@Before
 	public void setUp() {
-		CheckDupService checkDupService = new CheckDupServiceImpl(userService);
 		dut = new ApiUsersController(checkDupService);
 	}
 
 	@Test
 	public void shouldReturnFalseWhenLoggedUserInputSelfCurrentUserId() {
-		when(userService.findByUserId(USER_ID)).thenReturn(USER1);
-
+		when(checkDupService.checkDuplicateUserId(any(SocialUser.class), anyString())).thenReturn(Boolean.FALSE);
 		String actual = dut.checkDuplicateUserId(USER1, USER_ID);
 		assertThat(actual, is(FALSE));
 	}
 
-
 	@Test
 	public void shouldReturnTrueWhenLoggendUserInputUserIdOfAnotherUser() {
-		when(userService.findByUserId(USER_ID)).thenReturn(USER1);
-
+		when(checkDupService.checkDuplicateUserId(any(SocialUser.class), anyString())).thenReturn(Boolean.TRUE);
 		String actual = dut.checkDuplicateUserId(USER2, USER_ID);
 		assertThat(actual, is(TRUE));
 	}
 
 	@Test
-	public void shouldReturnFalseWhenGuestInputEmailWhichDoesNotExist() {
-		String actual = dut.checkDuplicateEmail(SocialUser.GUEST_USER, USER_ID, ProviderType.slipp);
-		assertThat(actual, is(FALSE));
-	}
-
-	@Test
-	public void shouldReturnFalseWhenLoggedUserInputSelfCurrentEmail() {
-		when(userService.findByEmailAndProviderId(EMAIL, ProviderType.slipp)).thenReturn(USER1);
+	public void shouldReturnFalseWhenCheckDuplicateEmailReturnFalse() {
+		when(checkDupService.checkDuplicateEmail(any(SocialUser.class), anyString(), any(ProviderType.class))).thenReturn(Boolean.FALSE);
 
 		String actual = dut.checkDuplicateEmail(USER1, EMAIL, ProviderType.slipp);
 		assertThat(actual, is(FALSE));
 	}
 
 	@Test
-	public void shouldReturnTrueWhenLoggendUserInputEmailOfOtherUser() {
-		when(userService.findByEmailAndProviderId(EMAIL, ProviderType.slipp)).thenReturn(USER1);
+	public void shouldReturnFalseWhenCheckDuplicateEmailReturnTrue() {
+		when(checkDupService.checkDuplicateEmail(any(SocialUser.class), anyString(), any(ProviderType.class))).thenReturn(Boolean.TRUE);
 
 		String actual = dut.checkDuplicateEmail(USER2, EMAIL, ProviderType.slipp);
 		assertThat(actual, is(TRUE));
