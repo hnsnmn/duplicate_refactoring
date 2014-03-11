@@ -38,41 +38,41 @@ public class ApiUsersControllerTest {
 	}
 
 	@Test
-	public void duplicateUserId_login_isSameUser() {
+	public void shouldReturnFalseWhenLoggedUserInputSelfCurrentUserId() {
 		when(userService.findByUserId(USER_ID)).thenReturn(USER1);
 
-		String actual = dut.duplicateUserId(USER1, USER_ID);
+		String actual = dut.checkDuplicateUserId(USER1, USER_ID);
 		assertThat(actual, is(FALSE));
 	}
 
 
 	@Test
-	public void duplicateUserId_login_isNotSameUser() {
+	public void shouldReturnTrueWhenLoggendUserInputUserIdOfAnotherUser() {
 		when(userService.findByUserId(USER_ID)).thenReturn(USER1);
 
-		String actual = dut.duplicateUserId(USER2, USER_ID);
+		String actual = dut.checkDuplicateUserId(USER2, USER_ID);
 		assertThat(actual, is(TRUE));
 	}
 
 	@Test
-	public void duplicateEmail_doesnot_existed() {
-		String actual = dut.duplicateEmail(SocialUser.GUEST_USER, USER_ID, ProviderType.slipp);
+	public void shouldReturnFalseWhenGuestInputEmailWhichDoesNotExist() {
+		String actual = dut.checkDuplicateEmail(SocialUser.GUEST_USER, USER_ID, ProviderType.slipp);
 		assertThat(actual, is(FALSE));
 	}
 
 	@Test
-	public void duplicateEmail_login_isSameUser() {
+	public void shouldReturnFalseWhenLoggedUserInputSelfCurrentEmail() {
 		when(userService.findByEmailAndProviderId(EMAIL, ProviderType.slipp)).thenReturn(USER1);
 
-		String actual = dut.duplicateEmail(USER1, EMAIL, ProviderType.slipp);
+		String actual = dut.checkDuplicateEmail(USER1, EMAIL, ProviderType.slipp);
 		assertThat(actual, is(FALSE));
 	}
 
 	@Test
-	public void duplicateEmail_login_isNotSameUser() {
+	public void shouldReturnTrueWhenLoggendUserInputEmailOfOtherUser() {
 		when(userService.findByEmailAndProviderId(EMAIL, ProviderType.slipp)).thenReturn(USER1);
 
-		String actual = dut.duplicateEmail(USER2, EMAIL, ProviderType.slipp);
+		String actual = dut.checkDuplicateEmail(USER2, EMAIL, ProviderType.slipp);
 		assertThat(actual, is(TRUE));
 	}
 
